@@ -8,6 +8,6 @@ defmodule EtsyScraper.Parser do
   def extract_external_website_link(html) do
     Floki.find(html, "[data-outside-link='shop-website']")
     |> Floki.attribute("href")
-    |> hd
+    |> List.first()
   end
 end
