@@ -6,38 +6,8 @@ defmodule EtsyScraper.Parser do
   end
 
   def extract_external_website_link(html) do
-    link_parts =
-      Floki.find(html, "[data-outside-link='shop-website']")
-      |> hd
-
-    # link_parts look like this:
-    # {"a",
-    # [
-    #   {"data-outside-link", "shop-website"},
-    #   {"href", "http://www.woodallgoodshop.com"},
-    #   {"class", "  text-decoration-none  clearfix"},
-    #   {"title", "Website"},
-    #   {"target", "_blank"},
-    #   {"rel", "nofollow noopener"}
-    # ],
-    # [
-    #   {"span", [{"class", "etsy-icon"}],
-    # ...
-
-    {_, attrs, _} = link_parts
-
-    href_attr =
-      Enum.find(attrs, fn attr ->
-        case attr do
-          {"href", _} ->
-            attr
-
-          _ ->
-            nil
-        end
-      end)
-
-    {"href", link_url} = href_attr
-    link_url
+    Floki.find(html, "[data-outside-link='shop-website']")
+    |> Floki.attribute("href")
+    |> hd
   end
 end
