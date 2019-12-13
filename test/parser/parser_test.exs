@@ -21,4 +21,12 @@ defmodule EtsyParserTest do
       assert page_info.external_website_link == "http://www.woodallgoodshop.com"
     end
   end
+
+  describe "when email is present" do
+    test "finds the email" do
+      {:ok, html} = read_html()
+      page_info = EtsyScraper.Parser.extract_page_info(html)
+      assert page_info.email == "info@woodallgoodshop.com"
+    end
+  end
 end
