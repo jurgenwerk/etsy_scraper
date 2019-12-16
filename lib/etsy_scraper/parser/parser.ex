@@ -2,7 +2,8 @@ defmodule EtsyScraper.Parser do
   def extract_page_info(html) do
     %{
       email: extract_email(html),
-      external_website_link: extract_external_website_link(html)
+      external_website_link: extract_external_website_link(html),
+      sales: extract_sales(html)
     }
   end
 
@@ -21,5 +22,16 @@ defmodule EtsyScraper.Parser do
     |> Enum.uniq()
     |> List.flatten()
     |> List.first()
+  end
+
+  def extract_sales(html) do
+    sales_text =
+      Floki.find(html, ".shop-sales")
+      |> Floki.text()
+
+    case Integer.parse(sales_text) do
+      {sales, _} -> sales
+      :error -> nil
+    end
   end
 end

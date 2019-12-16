@@ -6,6 +6,12 @@ defmodule EtsyParserTest do
     File.read(path)
   end
 
+  test "parses sales count" do
+    {:ok, html} = read_html()
+    page_info = EtsyScraper.Parser.extract_page_info(html)
+    assert page_info.sales == 6295
+  end
+
   describe "when external website link is not present" do
     test "parses external website link" do
       html = "<html><head></head><body></body></html>"
