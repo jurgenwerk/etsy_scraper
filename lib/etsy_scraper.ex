@@ -1,18 +1,9 @@
 defmodule EtsyScraper do
-  @moduledoc """
-  Documentation for EtsyScraper.
-  """
+  alias EtsyScraper.Fetcher
+  alias EtsyScraper.Parser
 
-  @doc """
-  Hello world.
-
-  ## Examples
-
-      iex> EtsyScraper.hello()
-      :world
-
-  """
-  def hello do
-    :world
+  def shop_data(url) do
+    Fetcher.extract_body(url)
+    |> Parser.extract_page_info()
   end
 end

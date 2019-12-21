@@ -3,7 +3,11 @@ defmodule EtsyScraper.Parser do
     %{
       email: extract_email(html),
       external_website_link: extract_external_website_link(html),
-      sales: extract_sales(html)
+      sales_count: extract_sales_count(html),
+      shop_name: extract_shop_name(html),
+      review_count: extract_review_count(html),
+      location: extract_location(html),
+      description: extract_description(html)
     }
   end
 
@@ -24,14 +28,48 @@ defmodule EtsyScraper.Parser do
     |> List.first()
   end
 
-  def extract_sales(html) do
+  def extract_sales_count(html) do
     sales_text =
       Floki.find(html, ".shop-sales")
       |> Floki.text()
 
     case Integer.parse(sales_text) do
-      {sales, _} -> sales
+      {sales_count, _} -> sales_count
       :error -> nil
     end
+  end
+
+  def extract_shop_name(html) do
+    Floki.find(html, ".shop-name-and-title-container h1")
+    |> Floki.text()
+  end
+
+  def extract_review_count(html) do
+    ratings_text =
+      Floki.find(html, ".reviews-wrapper .total-rating-count")
+      |> Floki.text()
+      |> String.trim()
+
+    ratings_numbers_text =
+      Regex.scan(~r/[0-9]+/, ratings_text)
+      |> List.flatten()
+      |> List.first()
+
+    # ratings_numbers_text will be nil if rating count is not present
+    case Integer.parse(ratings_numbers_text || "") do
+      {ratings_count, _} -> ratings_count
+      :error -> nil
+    end
+  end
+
+  def extract_description(html) do
+    Floki.find(html, ".shop-title [data-key='headline']")
+    |> Floki.text()
+    |> String.trim()
+  end
+
+  def extract_location(html) do
+    Floki.find(html, "[data-key='user_location']")
+    |> Floki.text()
   end
 end
