@@ -13,7 +13,7 @@ defmodule EtsyScraper.Parser do
 
   # Some shops have their external website listed (e.g. Shopify)
   def extract_external_website_link(html) do
-    Floki.find(html, "[data-outside-link='shop-website']")
+    Floki.find(html, "[title='Website']")
     |> Floki.attribute("href")
     |> List.first()
   end

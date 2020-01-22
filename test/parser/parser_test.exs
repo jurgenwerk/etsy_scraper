@@ -33,13 +33,13 @@ defmodule EtsyParserTest do
   test "parses sales count" do
     {:ok, html} = read_html()
     page_info = EtsyScraper.Parser.extract_page_info(html)
-    assert page_info.sales_count == 6295
+    assert page_info.sales_count == 6724
   end
 
   test "parses review count" do
     {:ok, html} = read_html()
     page_info = EtsyScraper.Parser.extract_page_info(html)
-    assert page_info.review_count == 851
+    assert page_info.review_count == 894
   end
 
   test "parses description" do
